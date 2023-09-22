@@ -16,7 +16,9 @@ while True:
     #             image_inverted[y, x, c] = image[y, image.shape[1] -x -1, c]
 
     cv2.imshow("Inverted", image_inverted)
-    cv2.waitKey(1)
+    c = cv2.waitKey(1)
+    if c == 27:
+        break
 
 if cap.isOpened():
     cap.release()

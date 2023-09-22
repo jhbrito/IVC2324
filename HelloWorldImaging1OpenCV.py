@@ -60,7 +60,8 @@ viewImage(resized, "Lena resized to {}%".format(scale_percent))
 
 # Drawing a Rectangle
 output = image.copy()
-cv2.rectangle(output, (200, 200), (360, 390), (255, 0, 0), 10)
+# cv2.rectangle(output, (200, 200), (360, 390), (255, 0, 0), 10)
+cv2.rectangle(img=output, pt1=(200, 200), pt2=(360, 390), color=(255, 0, 0), thickness=10)
 viewImage(output, "Lena with a rectangle")
 
 # Drawing a line
