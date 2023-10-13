@@ -6,3 +6,4 @@ conda env export > environment.yml
 
 ## Create conda environment
 conda env create -n Project_Environment --file environment.yml
+
