@@ -20,7 +20,8 @@ def update_segmentation():
                                        maxval=1, type=cv2.THRESH_BINARY)
         ret, mask_hmax = cv2.threshold(src=image_hsv[:, :, 0], thresh=hmax,
                                       maxval=1, type=cv2.THRESH_BINARY_INV)
-        mask_h = mask_hmin * mask_hmax
+        mask_h = cv2.bitwise_and(mask_hmin, mask_hmax)
+        # mask_h = mask_hmin * mask_hmax
     else:
         ret, mask_hmin = cv2.threshold(src=image_hsv[:, :, 0], thresh=hmin,
                                        maxval=1, type=cv2.THRESH_BINARY)
