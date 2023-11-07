@@ -25,7 +25,7 @@ while True:
         cap.open(0)
     _, image = cap.read()
     # image = image[:, ::-1, :]
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
 
     results = model(image)
 
@@ -49,14 +49,16 @@ while True:
                     thickness=1)
 
     text_to_show = str(int(np.round(framerate))) + " fps"
-    cv2.putText(img=image_objects, text=text_to_show,
-                org=(10, 30),
+    cv2.putText(img=image_objects,
+                text=text_to_show,
+                org=(5, 15),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale=1,
-                color=(0, 255, 0), thickness=2)
-    image_objects = cv2.cvtColor(image_objects, cv2.COLOR_RGB2BGR)
-    cv2.imshow("Image", image_objects)
+                fontScale=0.5,
+                color=(0, 255, 0),
+                thickness=1)
+    image_objects = cv2.cvtColor(src=image_objects, code=cv2.COLOR_RGB2BGR)
+    cv2.imshow(winname="Image", mat=image_objects)
 
-    c = cv2.waitKey(1)
+    c = cv2.waitKey(delay=1)
     if c == 27:
         break
