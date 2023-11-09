@@ -1,3 +1,20 @@
+# Least squares solving
+# y = m x + b
+# y0 = m x0 + b
+# y1 = m x1 + b
+# y2 = m x2 + b
+# y3 = m x3 + b
+# y4 = m x4 + b
+# equivalent to A p = y
+# with
+# A = [x0 1
+#      x1 1
+#      x2 1
+#      x3 1
+#      x4 1]
+#  p = [m
+#       b]
+
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random import default_rng
