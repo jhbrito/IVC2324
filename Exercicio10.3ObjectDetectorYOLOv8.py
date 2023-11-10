@@ -14,6 +14,9 @@ file = "vtest.avi"
 cap = cv2.VideoCapture()
 
 model = YOLO("yolov8n.pt")
+print("Known classes ({})".format(len(model.names)))
+for i in range(len(model.names)):
+    print("{} : {}".format(i, model.names[i]))
 
 cv2.namedWindow("Image")
 while True:
@@ -27,26 +30,34 @@ while True:
     # image = image[:, ::-1, :]
     image = cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
 
-    results = model(image)
+    results = model(image, verbose=False)
 
     image_objects = image.copy()
 
-    results = results[0]
-    for result in results:
-        b = result.boxes.data[0]
-        cv2.rectangle(img=image_objects,
-                      pt1=(int(b[0]), int(b[1])),
-                      pt2=(int(b[2]), int(b[3])),
-                      color=(255, 0, 0),
-                      thickness=2)
-        text = "{}:{:.2f}".format(results.names[int(b[5])], b[4])
-        cv2.putText(img=image_objects,
-                    text=text,
-                    org=np.array(np.round((float(b[0]), float(b[1] - 1))), dtype=int),
-                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=0.5,
-                    color=(255, 0, 0),
-                    thickness=1)
+    objects = results[0]
+    for object in objects:
+        box = object.boxes.data[0]
+        pt1 = (int(box[0]), int(box[1]))
+        pt2 = (int(box[2]), int(box[3]))
+        confidence = box[4]
+        class_id = int(box[5])
+        if class_id == 0 and confidence > 0.8:
+            cv2.rectangle(img=image_objects, pt1=pt1, pt2=pt2, color=(255, 0, 0), thickness=2)
+            text = "{}:{:.2f}".format(objects.names[class_id], confidence)
+            cv2.putText(img=image_objects,
+                        text=text,
+                        org=np.array(np.round((float(box[0]), float(box[1] - 1))), dtype=int),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=0.5,
+                        color=(255, 0, 0),
+                        thickness=1)
+        else:
+            cv2.rectangle(img=image_objects,
+                          pt1=(int(box[0]), int(box[1])),
+                          pt2=(int(box[2]), int(box[3])),
+                          color=(0, 0, 0),
+                          thickness=2)
+
 
     text_to_show = str(int(np.round(framerate))) + " fps"
     cv2.putText(img=image_objects,
