@@ -4,14 +4,15 @@ import cv2
 import time
 import numpy as np
 
-
-last_frame_timestamp = 0
+useCamera = True
 
 folder = "Files"
 file = "vtest.avi"
 
-# cap = cv2.VideoCapture(os.path.join(folder, file))
-cap = cv2.VideoCapture()
+if useCamera:
+    cap = cv2.VideoCapture()
+else:
+    cap = cv2.VideoCapture(os.path.join(folder, file))
 
 model = YOLO("yolov8n.pt")
 print("Known classes ({})".format(len(model.names)))
@@ -19,6 +20,8 @@ for i in range(len(model.names)):
     print("{} : {}".format(i, model.names[i]))
 
 cv2.namedWindow("Image")
+
+last_frame_timestamp = 0
 while True:
     begin_time_stamp = time.time()
     framerate = 1 / (begin_time_stamp - last_frame_timestamp)
@@ -27,7 +30,8 @@ while True:
     if not cap.isOpened():
         cap.open(0)
     _, image = cap.read()
-    # image = image[:, ::-1, :]
+    if useCamera:
+        image = image[:, ::-1, :]
     image = cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
 
     results = model(image, verbose=False)
@@ -41,7 +45,7 @@ while True:
         pt2 = (int(box[2]), int(box[3]))
         confidence = box[4]
         class_id = int(box[5])
-        if class_id == 0 and confidence > 0.8:
+        if confidence > 0.8:  # class_id == 0 and confidence > 0.8:
             cv2.rectangle(img=image_objects, pt1=pt1, pt2=pt2, color=(255, 0, 0), thickness=2)
             text = "{}:{:.2f}".format(objects.names[class_id], confidence)
             cv2.putText(img=image_objects,
