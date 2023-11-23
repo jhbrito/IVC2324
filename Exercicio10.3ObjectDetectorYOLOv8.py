@@ -4,11 +4,11 @@ import cv2
 import time
 import numpy as np
 
-useCamera = True
+useCamera = False
 
 folder = "Files"
 file = "vtest.avi"
-
+file = "slow_traffic_small.mp4"
 if useCamera:
     cap = cv2.VideoCapture()
 else:
@@ -45,7 +45,7 @@ while True:
         pt2 = (int(box[2]), int(box[3]))
         confidence = box[4]
         class_id = int(box[5])
-        if confidence > 0.8:  # class_id == 0 and confidence > 0.8:
+        if True:  # class_id == 0 and confidence > 0.8:
             cv2.rectangle(img=image_objects, pt1=pt1, pt2=pt2, color=(255, 0, 0), thickness=2)
             text = "{}:{:.2f}".format(objects.names[class_id], confidence)
             cv2.putText(img=image_objects,
