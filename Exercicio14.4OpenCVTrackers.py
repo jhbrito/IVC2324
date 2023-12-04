@@ -1,8 +1,8 @@
 import cv2
+# pip install opencv-contrib-python
 import os
 import time
 import numpy as np
-import matplotlib.pyplot as plt
 
 folder = "Files"
 file = "vtest.avi"
