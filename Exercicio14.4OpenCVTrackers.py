@@ -10,7 +10,7 @@ file = "vtest.avi"
 cap = cv2.VideoCapture(os.path.join(folder, file))
 
 tracker_types = ["KCF", "CSRT"]
-tracker_type = tracker_types[1]
+tracker_type = tracker_types[0]
 
 if tracker_type == "KCF":
     tracker = cv2.TrackerKCF_create()
@@ -23,10 +23,8 @@ bbox = (x, y, w, h)
 _, frame = cap.read()
 
 img = cv2.rectangle(img=frame, pt1=(x, y), pt2=(x+w, y+h), color=255, thickness=2)
-# plt.imshow(cv2.cvtColor(src=img, code=cv2.COLOR_BGR2RGB))
-# plt.show()
 
-cv2.imshow("Inicio", img)
+cv2.imshow("Image", img)
 cv2.waitKey()
 tracker.init(frame, bbox)
 
@@ -61,11 +59,9 @@ while True:
                 fontScale=0.5,
                 color=(0, 255, 0),
                 thickness=1)
-    # cv2.imshow(winname="Image", mat=image_show)
-    plt.imshow(cv2.cvtColor(src=image_show, code=cv2.COLOR_BGR2RGB))
-    plt.show()
+    cv2.imshow(winname="Image", mat=image_show)
 
-    #c = cv2.waitKey(delay=1)
-    #if c == 27:
-    #    break
+    c = cv2.waitKey(delay=5)
+    if c == 27:
+        break
 
