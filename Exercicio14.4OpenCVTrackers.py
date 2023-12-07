@@ -63,7 +63,7 @@ while True:
                     thickness=1)
         cv2.imshow(winname="Image", mat=image_show)
 
-        c = cv2.waitKey(delay=5)
+        c = cv2.waitKey(delay=100)
         if c == 27:
             break
     else:
