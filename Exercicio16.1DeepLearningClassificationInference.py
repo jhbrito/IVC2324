@@ -12,10 +12,10 @@ IMAGE_RES = 224
 labels_path = tf.keras.utils.get_file('ImageNetLabels.txt', 'https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt')
 imagenet_labels = np.array(open(labels_path).read().splitlines())
 
-image_path = tf.keras.utils.get_file('grace_hopper.jpg', 'https://storage.googleapis.com/download.tensorflow.org/example_images/grace_hopper.jpg')
-image1 = PImage.open(image_path).resize((IMAGE_RES, IMAGE_RES))
-image_path = tf.keras.utils.get_file('STOP.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/f9/STOP_sign.jpg')
-image2 = PImage.open(image_path).resize((IMAGE_RES, IMAGE_RES))
+image1_path = tf.keras.utils.get_file('grace_hopper.jpg', 'https://storage.googleapis.com/download.tensorflow.org/example_images/grace_hopper.jpg')
+image1 = PImage.open(image1_path).resize((IMAGE_RES, IMAGE_RES))
+image2_path = tf.keras.utils.get_file('STOP.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/f9/STOP_sign.jpg')
+image2 = PImage.open(image2_path).resize((IMAGE_RES, IMAGE_RES))
 
 plt.imshow(image1)
 plt.axis('off')
@@ -54,7 +54,7 @@ print("predicted_class_name1:", predicted_class_name1)
 predicted_class_name2 = imagenet_labels[predicted_class2 + 1]
 print("predicted_class_name2:", predicted_class_name2)
 
-image3 = tf.keras.preprocessing.image.load_img(image_path, target_size=(224, 224))
+image3 = tf.keras.preprocessing.image.load_img(image1_path, target_size=(224, 224))
 x3 = tf.keras.preprocessing.image.img_to_array(image3)
 x3 = np.expand_dims(x3, axis=0)
 x3 = tf.keras.applications.resnet.preprocess_input(x3)
@@ -68,4 +68,21 @@ print("Class:", predicted_class3)
 plt.imshow(image3)
 plt.axis('off')
 _ = plt.title("Prediction: " + predicted_class_name3.title())
+plt.show()
+
+
+image4 = tf.keras.preprocessing.image.load_img(image2_path, target_size=(224, 224))
+x4 = tf.keras.preprocessing.image.img_to_array(image4)
+x4 = np.expand_dims(x4, axis=0)
+x4 = tf.keras.applications.resnet.preprocess_input(x4)
+result4 = model.predict(x4)
+predicted_class_decoded4 = tf.keras.applications.resnet.decode_predictions(result4, top=1)
+predicted_class_name4 = predicted_class_decoded4[0][0][1]
+
+predicted_class4 = np.argmax(result4[0], axis=-1)
+print("Class:", predicted_class4)
+
+plt.imshow(image4)
+plt.axis('off')
+_ = plt.title("Prediction: " + predicted_class_name4.title())
 plt.show()
